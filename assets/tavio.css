@@ -253,7 +253,61 @@ body {
     font-size: 12px;
     border-radius: 8px;
 }
+/* ------------------------- BACK BUTTON WITH ANIMATION ------------------------- */
+.btn-back {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    padding: 6px 8px;               /* کمی بالاتر با پدینگ کمتر */
+    border: none;
+    background: transparent;
+    color: rgba(245, 245, 245, 0.6);
+    cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: padding 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.2),
+                color 0.3s ease,
+                background 0.3s ease;
+}
 
+.btn-back:hover {
+    padding-right: 14px;
+    color: var(--accent);
+    background: rgba(176, 255, 165, 0.06);
+}
+
+/* آیکن */
+.back-icon {
+    flex-shrink: 0;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+}
+
+.btn-back:hover .back-icon {
+    transform: translateX(-3px);     /* حرکت کمتر به چپ */
+}
+
+/* متن مخفی */
+.back-text {
+    max-width: 0;
+    opacity: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 13px;                 /* کمی کوچک‌تر */
+    font-weight: 400;
+    font-family: inherit;
+    margin-left: 0;
+    transform: translateY(1px);      /* تنظیم عمودی متن نسبت به آیکن */
+    transition: max-width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1.2),
+                opacity 0.3s ease 0.1s,
+                margin-left 0.3s ease;
+}
+
+.btn-back:hover .back-text {
+    max-width: 60px;
+    opacity: 1;
+    margin-left: 1px;                /* فاصلهٔ کمتر با آیکن */
+}
 /* =========================== PROMPT FORM =========================== */
 
 .prompt-form {
@@ -730,6 +784,22 @@ body {
     50% { opacity: 0; }
 }
 
+/* ------------------------- PROMPT DESCRIPTION ------------------------- */
+.prompt-description {
+    background: rgba(176, 255, 165, 0.04);
+    border: 1px solid rgba(176, 255, 165, 0.12);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 24px;
+    color: rgba(245, 245, 245, 0.75);
+    font-size: 14px;
+    line-height: 1.7;
+    white-space: pre-wrap;          /* احترام به خطوط جداکنندهٔ متن */
+}
+
+.prompt-description:empty {
+    display: none;                  /* اگر توضیحی نباشد مخفی شود */
+}
 /* =========================== RESPONSIVE (موبایل) =========================== */
 
 @media (max-width: 640px) {
