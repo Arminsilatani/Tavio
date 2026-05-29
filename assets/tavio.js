@@ -1,93 +1,93 @@
-/*
-****************************************************
-Author: Armin Silatani
-Date: 2026-05-24
-Version: 1.0.0
-****************************************************
+/*****************************************************
+  *  Author: Armin Silatani
+  *  Date: 2026-05-28
+  *  Version: 1.0.0
+  ****************************************************
 */
+
+/* =========================== TAVIO APP ============================ */
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log('Tavio: DOM loaded');
 
-  const STORAGE_KEY = 'tavio_prompts';
-  const CURRENT_VERSION = 1;
-  const MASTER_PASSWORD = '1320';
+  /* :::::::::::::::::::::::::: CONSTANTS :::::::::::::::::::::::::: */
 
-  // ======================== لیست کامل مدل‌های هوش مصنوعی ========================
+  const STORAGE_KEY      = 'tavio_prompts';
+  const CURRENT_VERSION  = 1;
+  const MASTER_PASSWORD  = '1320';
+
+  /* ------------------------- AI MODELS ------------------------- */
+
   const ALL_AI_MODELS = [
-  // فعال (روشن)
-  { id: 'gpt-5.4', name: 'Chat GPT 5.4', active: true },
-  { id: 'gpt-5.3-codex', name: 'Chat GPT 5.3 Codex', active: true },
-  { id: 'gpt-5.4-mini', name: 'Chat GPT 5.4 mini', active: true },
-  { id: 'gpt-5.4-nano', name: 'Chat GPT 5.4 nano', active: true },
-  { id: 'o4-mini', name: 'Chat GPT o4-mini', active: true },
-  { id: 'o4-mini-high', name: 'Chat GPT o4 mini (high)', active: true },
-  { id: 'gpt-image-1.5', name: 'Chat GPT Image 1.5', active: true },
-  { id: 'claude-4.6-sonnet', name: 'Claude 4.6 Sonnet', active: true },
-  { id: 'claude-4.5-haiku', name: 'Claude 4.5 Haiku', active: true },
-  { id: 'gemini-3.1-pro', name: 'Gemini 3.1 Pro', active: true },
-  { id: 'gemini-3-flash', name: 'Gemini 3 Flash', active: true },
-  { id: 'gemini-2.5-flash', name: 'Gemini 2.5 Flash', active: true },
-  { id: 'gemini-2.5-pro', name: 'Gemini 2.5 pro', active: true },
-  { id: 'nano-banana-2', name: 'Nano Banana 2', active: true },
-  { id: 'deepseek-v4-flash', name: 'DeepSeek V4 Flash', active: true },
-  { id: 'deepseek-r1', name: 'DeepSeek R1', active: true },
-  { id: 'deepseek-v4-pro', name: 'DeepSeek V4 Pro', active: true },
+    // Active
+    { id: 'gpt-5.4',                    name: 'Chat GPT 5.4',                              active: true  },
+    { id: 'gpt-5.3-codex',              name: 'Chat GPT 5.3 Codex',                        active: true  },
+    { id: 'gpt-5.4-mini',               name: 'Chat GPT 5.4 mini',                         active: true  },
+    { id: 'gpt-5.4-nano',               name: 'Chat GPT 5.4 nano',                         active: true  },
+    { id: 'o4-mini',                    name: 'Chat GPT o4-mini',                          active: true  },
+    { id: 'o4-mini-high',               name: 'Chat GPT o4 mini (high)',                   active: true  },
+    { id: 'gpt-image-1.5',              name: 'Chat GPT Image 1.5',                        active: true  },
+    { id: 'claude-4.6-sonnet',          name: 'Claude 4.6 Sonnet',                         active: true  },
+    { id: 'claude-4.5-haiku',           name: 'Claude 4.5 Haiku',                          active: true  },
+    { id: 'gemini-3.1-pro',             name: 'Gemini 3.1 Pro',                            active: true  },
+    { id: 'gemini-3-flash',             name: 'Gemini 3 Flash',                            active: true  },
+    { id: 'gemini-2.5-flash',           name: 'Gemini 2.5 Flash',                          active: true  },
+    { id: 'gemini-2.5-pro',             name: 'Gemini 2.5 pro',                            active: true  },
+    { id: 'nano-banana-2',name: 'Nano Banana 2',                             active: true  },
+    { id: 'deepseek-v4-flash',          name: 'DeepSeek V4 Flash',                         active: true  },
+    { id: 'deepseek-r1',                name: 'DeepSeek R1',                               active: true  },
+    { id: 'deepseek-v4-pro',            name: 'DeepSeek V4 Pro',                           active: true  },
+    // DeepSeek Instant
+    { id: 'deepseek-instant',           name: 'DeepSeek Instant',                          active: true  },
+    { id: 'deepseek-instant-dt',        name: 'DeepSeek Instant (DeepThink)',               active: true  },
+    { id: 'deepseek-instant-s',         name: 'DeepSeek Instant (Search)',                 active: true  },
+    { id: 'deepseek-instant-dt-s',      name: 'DeepSeek Instant (DeepThink + Search)',     active: true  },
+    // DeepSeek Expert
+    { id: 'deepseek-expert',            name: 'DeepSeek Expert',                           active: true  },
+    { id: 'deepseek-expert-dt',         name: 'DeepSeek Expert (DeepThink)',               active: true  },
+    { id: 'deepseek-expert-s',          name: 'DeepSeek Expert (Search)',                  active: true  },
+    { id: 'deepseek-expert-dt-s',       name: 'DeepSeek Expert (DeepThink + Search)',      active: true  },
+    // DeepSeek Vision
+    { id: 'deepseek-vision',            name: 'DeepSeek Vision',                           active: true  },
+    { id: 'deepseek-vision-dt',         name: 'DeepSeek Vision (DeepThink)',               active: true  },
+    { id: 'grok-4.1-fast',              name: 'Grok 4.1 Fast',                             active: true  },
+    { id: 'grok-4',                     name: 'Grok 4',                                    active: true  },
+    { id: 'grok-3',                     name: 'Grok 3',                                    active: true  },
+    { id: 'glm-5',                      name: 'GLM 5',                                     active: true  },
+    { id: 'kimi-2.5',                   name: 'Kimi 2.5',                                  active: true  },
+    { id: 'minimax-m2',                 name: 'Minimax M2',                                active: true  },
+    { id: 'perplexity',                 name: 'Perplexity',                                active: true  },
+    { id: 'qwen-3',                     name: 'Qwen 3',                                    active: true  },
+    { id: 'qwen-3-coder',               name: 'Qwen 3 Coder',                              active: true  },
+    { id: 'qwen-3-max',                 name: 'Qwen 3 Max',                                active: true  },
+    { id: 'copilot-thinkdeeper',        name: 'Copilot (Think Deeper)',                    active: true  },
+    { id: 'copilot-smart',              name: 'Copilot (Smart)',                           active: true  },
+    { id: 'copilot-learn&study',        name: 'Copilot (Learn & Study)',                   active: true  },
+    { id: 'copilot-deepresearch',       name: 'Copilot (Deep Research)',                   active: true  },
+    { id: 'copilot-search',             name: 'Copilot (Search)',                          active: true  },
+    // Inactive
+    { id: 'gpt-5.5',                    name: 'Chat GPT 5.5',                              active: false },
+    { id: 'gpt-5.4-pro',               name: 'Chat GPT 5.4 Pro',active: false },
+    { id: 'o3',                         name: 'Chat GPT o3',                               active: false },
+    { id: 'o3-pro',                     name: 'Chat GPT o3 pro',                           active: false },
+    { id: 'dalle-3',                    name: 'DALL-E 3',                                  active: false },
+    { id: 'gpt-image-2',                name: 'Chat GPT Image 2',                          active: false },
+    { id: 'sora-2',                     name: 'Sora 2',                                    active: false },
+    { id: 'claude-4.7-opus',            name: 'Claude 4.7 Opus',                           active: false },
+    { id: 'nano-banana-pro',            name: 'Nano Banana Pro',                           active: false },
+    { id: 'gemini-3.5-flash',           name: 'Gemini 3.5 Flash',active: false },
+    { id: 'veo-3.1',                    name: 'Veo 3.1',                                   active: false },
+    { id: 'veo-3.1-fast',               name: 'Veo 3.1 Fast',                              active: false },
+    { id: 'imagen-4',                   name: 'Imagen 4',                                  active: false },
+    { id: 'grok-3-thinking',            name: 'Grok 3 Thinking',                active: false },
+  ];
 
-  // DeepSeek Instant
-  { id: 'deepseek-instant', name: 'DeepSeek Instant', active: true },
-  { id: 'deepseek-instant-dt', name: 'DeepSeek Instant (DeepThink)', active: true },
-  { id: 'deepseek-instant-s', name: 'DeepSeek Instant (Search)', active: true },
-  { id: 'deepseek-instant-dt-s', name: 'DeepSeek Instant (DeepThink + Search)', active: true },
-
-  // DeepSeek Expert
-  { id: 'deepseek-expert', name: 'DeepSeek Expert', active: true },
-  { id: 'deepseek-expert-dt', name: 'DeepSeek Expert (DeepThink)', active: true },
-  { id: 'deepseek-expert-s', name: 'DeepSeek Expert (Search)', active: true },
-  { id: 'deepseek-expert-dt-s', name: 'DeepSeek Expert (DeepThink + Search)', active: true },
-
-  // DeepSeek Vision
-  { id: 'deepseek-vision', name: 'DeepSeek Vision', active: true },
-  { id: 'deepseek-vision-dt', name: 'DeepSeek Vision (DeepThink)', active: true },
-
-  { id: 'grok-4.1-fast', name: 'Grok 4.1 Fast', active: true },
-  { id: 'grok-4', name: 'Grok 4', active: true },
-  { id: 'grok-3', name: 'Grok 3', active: true },
-  { id: 'glm-5', name: 'GLM 5', active: true },
-  { id: 'kimi-2.5', name: 'Kimi 2.5', active: true },
-  { id: 'minimax-m2', name: 'Minimax M2', active: true },
-  { id: 'perplexity', name: 'Perplexity', active: true },
-  { id: 'qwen-3', name: 'Qwen 3', active: true },
-  { id: 'qwen-3-coder', name: 'Qwen 3 Coder', active: true },
-  { id: 'qwen-3-max', name: 'Qwen 3 Max', active: true },
-  { id: 'copilot-thinkdeeper', name: 'Copilot (Think Deeper)', active: true },
-  { id: 'copilot-smart', name: 'Copilot (Smart)', active: true },
-  { id: 'copilot-learn&study', name: 'Copilot (Learn & Study)', active: true },
-  { id: 'copilot-deepresearch', name: 'Copilot (Deep Research)', active: true },
-  { id: 'copilot-search', name: 'Copilot (Search)', active: true },
-
-  // غیرفعال (خاموش)
-  { id: 'gpt-5.5', name: 'Chat GPT 5.5', active: false },
-  { id: 'gpt-5.4-pro', name: 'Chat GPT 5.4 Pro', active: false },
-  { id: 'o3', name: 'Chat GPT o3', active: false },
-  { id: 'o3-pro', name: 'Chat GPT o3 pro', active: false },
-  { id: 'dalle-3', name: 'DALL-E 3', active: false },
-  { id: 'gpt-image-2', name: 'Chat GPT Image 2', active: false },
-  { id: 'sora-2', name: 'Sora 2', active: false },
-  { id: 'claude-4.7-opus', name: 'Claude 4.7 Opus', active: false },
-  { id: 'nano-banana-pro', name: 'Nano Banana Pro', active: false },
-  { id: 'gemini-3.5-flash', name: 'Gemini 3.5 Flash', active: false },
-  { id: 'veo-3.1', name: 'Veo 3.1', active: false },
-  { id: 'veo-3.1-fast', name: 'Veo 3.1 Fast', active: false },
-  { id: 'imagen-4', name: 'Imagen 4', active: false },
-  { id: 'grok-3-thinking', name: 'Grok 3 Thinking', active: false }
-];
-  function getAiName(id) {
+  const getAiName = (id) => {
     const model = ALL_AI_MODELS.find(m => m.id === id);
     return model ? model.name : id;
-  }
+  };
 
-  // ======================== پرامپت‌های پیش‌فرض ========================
+  /* ------------------------- DEFAULT PROMPTS ------------------------- */
   const defaultPrompts = [
     {
       id: '1',
